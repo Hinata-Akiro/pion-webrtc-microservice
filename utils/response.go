@@ -1,5 +1,12 @@
 package utils
 
+import (
+	"crypto/rand"
+	"fmt"
+	"time"
+)
+
+
 
 
 // ErrorResponse represents a structured error response
@@ -30,4 +37,16 @@ func NewSuccessResponse(statusCode int, message string, data interface{}) *Succe
 		Message:    message,
 		Data:       data,
 	}
+}
+
+// GenerateSessionID generates a unique session ID.
+func GenerateSessionID() string {
+	b := make([]byte, 16)
+	_, _ = rand.Read(b)
+	return fmt.Sprintf("%x", b)
+}
+
+// GetTimestamp returns the current timestamp.
+func GetTimestamp() time.Time {
+	return time.Now()
 }
