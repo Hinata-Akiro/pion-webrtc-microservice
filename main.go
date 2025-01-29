@@ -75,7 +75,7 @@ func main() {
 
 	e.GET("/chat/notifications", handleChatNotifications)
 
-	e.Logger.Fatal(e.Start(":8000"))
+	e.Logger.Fatal(e.Start(":8001"))
 }
 
 func handleOffer(c echo.Context, peerManager *peer.PeerManager) error {
@@ -175,6 +175,7 @@ func sendChatMessage(c echo.Context) error {
 		SenderID   string `json:"senderID"`
 		ReceiverID string `json:"receiverID"`
 		Message    string `json:"message"`
+		Type       string `json:"type"`
 	}
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, utils.NewErrorResponse(http.StatusBadRequest, "invalid request"))
@@ -185,6 +186,7 @@ func sendChatMessage(c echo.Context) error {
 		SenderID:   request.SenderID,
 		ReceiverID: request.ReceiverID,
 		Message:    request.Message,
+		Type:       chat.MessageType(request.Type),
 		Timestamp:  utils.GetTimestamp(),
 	}
 	errResp := chatManger.AddMessage(request.SessionID, message)
